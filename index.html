@@ -1387,7 +1387,50 @@ body.view-mode .pay-del-btn {
   .notes-title-input { font-size:18px; padding:14px 16px 6px; }
   .notes-body-input { padding:0 16px 16px; font-size:13px; }
 }
-.notes-back-btn { display:none; width:30px; height:30px; border-radius:7px; border:1px solid var(--border); background:var(--s2); color:var(--text2); cursor:pointer; font-size:16px; align-items:center; justify-content:center; }
+/* ── SUPPLIER MOBILE CARDS ── */
+@media(max-width:680px) and (orientation:portrait) {
+  .sup-toolbar-top { padding:10px 14px; gap:8px; }
+  .sup-filter-bar  { padding:6px 14px; gap:6px; }
+  .sup-table-wrap  { display:none !important; }
+  .sup-add-row     { display:none !important; }
+  .sup-cards-wrap  { display:flex !important; flex-direction:column; gap:10px; padding:12px 14px; flex:1; overflow-y:auto; }
+  .sup-card {
+    background:var(--s1); border:1px solid var(--border);
+    border-radius:12px; overflow:hidden;
+    transition:border-color .15s; animation:fadeIn .18s ease;
+  }
+  .sup-card:hover { border-color:var(--border2); }
+  .sup-card-head {
+    display:flex; align-items:center; gap:10px;
+    padding:12px 14px; cursor:pointer; user-select:none;
+  }
+  .sup-card-head:active { background:var(--s2); }
+  .sup-card-name { font-weight:700; font-size:14px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sup-card-expand { color:var(--text3); font-size:11px; flex-shrink:0; transition:transform .2s; }
+  .sup-card.open .sup-card-expand { transform:rotate(90deg); }
+  .sup-card-body { display:none; border-top:1px solid var(--border); }
+  .sup-card.open .sup-card-body { display:block; }
+  .sup-card-row {
+    display:flex; align-items:flex-start; gap:10px;
+    padding:9px 14px; border-bottom:1px solid var(--border);
+    font-size:13px;
+  }
+  .sup-card-row:last-child { border-bottom:none; }
+  .sup-card-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--text3); width:90px; flex-shrink:0; padding-top:1px; }
+  .sup-card-val { flex:1; min-width:0; color:var(--text); word-break:break-word; }
+  .sup-card-actions { display:flex; gap:8px; padding:10px 14px; border-top:1px solid var(--border); background:var(--s2); }
+  .sup-card-btn { flex:1; padding:8px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text2); font-family:Inter,sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-align:center; transition:all .15s; }
+  .sup-card-btn:hover { background:var(--s3); }
+  .sup-card-btn.edit { color:var(--accent); border-color:var(--accent-dim); }
+  .sup-card-btn.del  { color:var(--red);    border-color:var(--red-dim); }
+  .sup-empty-mobile { text-align:center; padding:48px 20px; color:var(--text3); }
+}
+
+/* Desktop/landscape: hide mobile cards */
+@media(min-width:681px), (orientation:landscape) {
+  .sup-cards-wrap { display:none !important; }
+}
+
 
 </style>
 
@@ -1661,7 +1704,7 @@ function clearAllData() {
     </div>
     <!-- Summary bar -->
     <div class="sup-summary" id="supSummary"></div>
-    <!-- Table -->
+    <!-- Table (desktop) -->
     <div class="sup-content">
       <div class="sup-table-wrap">
         <table class="sup-table" id="supTable">
@@ -1685,6 +1728,8 @@ function clearAllData() {
       </div>
       <button class="sup-add-row" onclick="openAddSupplier()" style="pointer-events:auto;">＋ Thêm nhà cung cấp mới</button>
     </div>
+    <!-- Cards (mobile) -->
+    <div class="sup-cards-wrap" id="supCardsWrap"></div>
   </div>
 
 </div><!-- end .main -->
@@ -3349,6 +3394,7 @@ function renderSuppliers() {
         ? '<div style="font-size:32px;margin-bottom:10px">📋</div><div style="font-weight:600;font-size:14px;margin-bottom:4px">Chưa có nhà cung cấp nào</div><div style="font-size:12px">Nhấn <b>＋ Thêm NCC</b> để bắt đầu</div>'
         : '<div style="font-size:32px;margin-bottom:10px">🔍</div><div style="font-weight:600">Không tìm thấy kết quả phù hợp</div>')+
       '</td></tr>';
+    renderSupplierCards([]);
     return;
   }
 
@@ -3385,6 +3431,56 @@ function renderSuppliers() {
       '<td style="min-width:120px"><div class="file-list" style="flex-wrap:wrap;gap:4px;display:flex">'+filesHtml+'</div></td>'+
       '<td><button class="sup-del-btn" onclick="delSupplier('+s.id+')" title="Xoá NCC này">✕</button></td>' +
     '</tr>';
+  }).join('');
+
+  // ── Mobile cards ──
+  renderSupplierCards(list);
+}
+
+function renderSupplierCards(list) {
+  const wrap = document.getElementById('supCardsWrap'); if (!wrap) return;
+  if (!list || !list.length) {
+    wrap.innerHTML = '<div class="sup-empty-mobile">' +
+      (suppliers.length === 0
+        ? '<div style="font-size:36px;margin-bottom:10px">📋</div><div style="font-weight:700;font-size:15px;margin-bottom:4px">Chưa có nhà cung cấp</div><div style="font-size:13px">Nhấn <b>＋ Thêm NCC</b> để bắt đầu</div>'
+        : '<div style="font-size:36px;margin-bottom:10px">🔍</div><div style="font-weight:700">Không tìm thấy kết quả</div>') +
+      '</div>';
+    return;
+  }
+  const openIds = new Set([...wrap.querySelectorAll('.sup-card.open')].map(el=>el.dataset.sid));
+  wrap.innerHTML = list.map(s => {
+    const cc = SUP_CATEGORY_COLORS[s.category]||{bg:'rgba(113,118,123,0.13)',color:'var(--text2)'};
+    const catBadge = s.category
+      ? '<span class="sup-field-badge" style="background:'+cc.bg+';color:'+cc.color+'">'+esc(s.category)+'</span>'
+      : '<span style="color:var(--text3)">—</span>';
+    const areaBadge = s.area
+      ? '<span style="background:var(--s3);color:var(--text2);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">📍 '+esc(s.area)+'</span>'
+      : '';
+    const row = (lbl, val) => val ? '<div class="sup-card-row"><span class="sup-card-lbl">'+lbl+'</span><span class="sup-card-val">'+val+'</span></div>' : '';
+    const files = s.files||[];
+    const filesHtml = files.length
+      ? files.map((f,fi)=>'<div class="file-chip" style="max-width:100%"><span>📎</span><span class="fn" onclick="openSupFile('+s.id+','+fi+')" title="'+esc(f.name)+'">'+esc(f.name)+'</span></div>').join('')
+      : '';
+    return '<div class="sup-card'+(openIds.has(String(s.id))?' open':'')+'" data-sid="'+s.id+'">' +
+      '<div class="sup-card-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
+        '<span class="sup-card-expand">▶</span>' +
+        '<span class="sup-card-name">'+esc(s.name||'—')+'</span>' +
+        (s.area ? '<span style="font-size:11px;color:var(--text3)">📍 '+esc(s.area)+'</span>' : '') +
+      '</div>' +
+      '<div class="sup-card-body">' +
+        '<div class="sup-card-row"><span class="sup-card-lbl">Hạng mục</span><span class="sup-card-val">'+catBadge+'</span></div>' +
+        row('Lĩnh vực', esc(s.field||'')) +
+        row('Liên hệ', esc(s.contact||'')) +
+        (s.phone ? '<div class="sup-card-row"><span class="sup-card-lbl">SĐT</span><span class="sup-card-val"><a href="tel:'+esc(s.phone)+'" style="color:var(--accent);font-weight:600;text-decoration:none">'+esc(s.phone)+'</a></span></div>' : '') +
+        (s.email ? '<div class="sup-card-row"><span class="sup-card-lbl">Email</span><span class="sup-card-val"><a href="mailto:'+esc(s.email)+'" style="color:var(--accent);font-size:12px;text-decoration:none">'+esc(s.email)+'</a></span></div>' : '') +
+        row('Ghi chú', esc(s.notes||'').replace(/\n/g,'<br>')) +
+        (filesHtml ? '<div class="sup-card-row"><span class="sup-card-lbl">📎 File</span><span class="sup-card-val"><div style="display:flex;flex-direction:column;gap:4px">'+filesHtml+'</div></span></div>' : '') +
+        '<div class="sup-card-actions">' +
+          '<button class="sup-card-btn edit" onclick="openEditSupplier('+s.id+')">✎ Chỉnh sửa</button>' +
+          '<button class="sup-card-btn del" onclick="delSupplier('+s.id+')">🗑 Xoá</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
 
