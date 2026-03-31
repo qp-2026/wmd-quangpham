@@ -879,6 +879,73 @@ html.light .ssel.done    { background:rgba(30,180,110,.12); }
 }
 .prop-btn-add:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
 
+/* ── SUPPLIER SHEET ── */
+.sup-toolbar-top {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 20px; border-bottom:1px solid var(--border);
+  background:var(--s1); flex-shrink:0;
+}
+.sup-filter-bar {
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  padding:8px 20px; border-bottom:1px solid var(--border);
+  background:var(--s1); flex-shrink:0;
+}
+.sup-summary {
+  display:flex; gap:1px; background:var(--border);
+  border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.sup-sum-card { flex:1; background:var(--s1); padding:10px 18px; min-width:0; }
+.sup-sum-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.8px; margin-bottom:2px; }
+.sup-sum-val { font-size:15px; font-weight:800; font-family:Inter,sans-serif; }
+.sup-content { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; }
+.sup-table-wrap { flex:1; overflow-x:auto; min-height:0; }
+.sup-table { width:100%; border-collapse:collapse; }
+.sup-table .sth {
+  background:var(--s2); font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.8px; color:var(--text3);
+  padding:8px 14px; text-align:left; border-bottom:1px solid var(--border);
+  white-space:nowrap; position:sticky; top:0; z-index:9;
+}
+.sup-table .sth:first-child { padding-left:22px; }
+.sup-row { transition:background .12s; }
+.sup-row:hover td { background:var(--s2); }
+.sup-row td {
+  padding:10px 14px; border-bottom:1px solid var(--border);
+  vertical-align:middle; font-size:13px;
+}
+.sup-row td:first-child { padding-left:22px; }
+.sup-row:last-child td { border-bottom:none; }
+.sup-ce {
+  outline:none; background:transparent; color:var(--text);
+  font-family:Inter,sans-serif; font-size:13px;
+  border:none; width:100%; padding:2px 4px; border-radius:4px;
+  transition:background .12s;
+}
+.sup-ce:focus { background:var(--s3); }
+.sup-ce::placeholder { color:var(--text3); font-style:italic; }
+.sup-ce:focus::placeholder { color:transparent; }
+.sup-add-row {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 22px; border-top:1px dashed var(--border2);
+  color:var(--text3); font-size:12px; cursor:pointer;
+  transition:background .12s; background:transparent;
+  font-family:Inter,sans-serif; font-weight:500;
+  border-left:none; border-right:none; border-bottom:none; width:100%; text-align:left; flex-shrink:0;
+}
+.sup-add-row:hover { background:var(--s2); color:var(--accent); }
+.sup-del-btn {
+  width:24px; height:24px; border-radius:5px; border:none;
+  background:transparent; color:var(--text3); cursor:pointer;
+  font-size:12px; transition:all .15s;
+  display:flex; align-items:center; justify-content:center;
+}
+.sup-del-btn:hover { background:var(--red-dim); color:var(--red); }
+.sup-field-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:2px 8px; border-radius:5px; font-size:11px; font-weight:600; white-space:nowrap;
+}
+body.view-mode .sup-del-btn { display:none !important; }
+
 /* ── PAYMENT SHEET ── */
 .pay-toolbar {
   display:flex; align-items:center; gap:10px;
@@ -1400,6 +1467,9 @@ function clearAllData() {
     <div class="sb-item" id="sbnav-calendar" draggable="true" data-label="Calendar" onclick="switchTabSb('calendar')"><span class="ico">
       <svg class="sb-ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h4M8 18h6"/></svg>
     </span><span id="tabname-calendar-sb">Calendar</span></div>
+    <div class="sb-item" id="sbnav-suppliers" draggable="true" data-label="Nhà Cung Cấp" onclick="switchTabSb('suppliers')"><span class="ico">
+      <svg class="sb-ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </span><span id="tabname-suppliers-sb">Nhà Cung Cấp</span><span class="sb-count" id="sc-suppliers">0</span></div>
     <div class="sb-item" id="sbnav-notes" draggable="true" data-label="Ghi chú" onclick="switchTabSb('notes')"><span class="ico">
       <svg class="sb-ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
     </span><span id="tabname-notes-sb">Ghi chú</span></div>
@@ -1427,6 +1497,9 @@ function clearAllData() {
     <button class="tab-btn" id="tab-payment" data-tab="payment" draggable="true" onclick="switchTab(&#39;payment&#39;)" ondragstart="tabDragStart(event)" ondragover="tabDragOver(event)" ondrop="tabDrop(event)" ondragend="tabDragEnd(event)" style="pointer-events: auto;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span id="tabname-payment">Tracking Thanh Toán</span>
       <span class="tab-rename-btn" onclick="openRenameTab(event,&#39;payment&#39;)" title="Đổi tên">✎</span>
+    </button>
+    <button class="tab-btn" id="tab-suppliers" data-tab="suppliers" onclick="switchTab('suppliers')" style="pointer-events:auto;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span id="tabname-suppliers">Nhà Cung Cấp</span>
     </button>
     <button class="tab-btn" id="tab-calendar" data-tab="calendar" onclick="switchTab('calendar')" style="pointer-events:auto;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span id="tabname-calendar">Calendar</span>
@@ -1550,6 +1623,70 @@ function clearAllData() {
     <div class="pay-content" id="payContent" style="display:flex;flex-direction:column;gap:16px"><div class="pay-group-card" style="border-left:4px solid var(--accent);background:var(--s1);border-radius:6px;"><div class="pay-card-head" onclick="togglePayCard(&#39;paycard-advance&#39;)"><span class="pay-card-toggle">▼</span><strong style="font-size:14px">Tạm ứng</strong><span style="color:var(--text3);font-size:12px;margin-left:auto">(1)</span></div><div id="paycard-advance" class="pay-card-body" style="padding:16px"><div class="pay-table-wrap"><table style="width:100%;border-collapse:collapse;margin-bottom:0;font-size:13px"><thead style="border-bottom:1px solid var(--border);background:var(--s3)"><tr><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">LOẠI</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">HẠNG MỤC</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">NGÀY REQUEST</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">MÃ ĐỀ XUẤT</th><th style="padding:6px 15px;text-align:right;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">SỐ TIỀN</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">TRẠNG THÁI</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">GHI CHÚ</th><th style="padding:8px;width:32px"></th></tr></thead><tbody><tr class="pay-row" data-rid="816" style="border-bottom:1px solid var(--border-dim);hover-background:var(--s2)"><td style="padding:10px 15px"><select class="pay-type-sel" onchange="updatePay(816,&#39;type&#39;,this.value);renderPayTable()" style="font-size:12px"><option value="advance" selected="">Tạm ứng</option><option value="payment">Thanh toán</option></select></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Tên dự án..." oninput="updatePay(816,&#39;name&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px 15px"><input class="pay-ce" type="date" value="" onchange="updatePay(816,&#39;date&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Mã đề xuất" oninput="updatePay(816,&#39;code&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px;text-align:right"><input class="pay-ce money" value="" placeholder="0" onfocus="this.value=unfmtAmt(this.value)" onblur="this.value=fmtAmt(this.value);updatePay(816,&#39;amount&#39;,unfmtAmt(this.value));renderPaySummary()" style="font-size:12px;border:none;background:transparent;text-align:right;padding:0;width:100%"></td><td style="padding:10px 15px"><div class="sdrop-wrap" onclick="event.stopPropagation()" style="pointer-events: auto;"><span class="status-pill sent" onclick="togglePaySDrop(event,816)" style="pointer-events: auto; cursor: pointer;">Sent</span><div class="sdrop-menu" id="paysdrop-816" style="pointer-events: auto;"><div class="sdrop-opt opt-sent opt-active" onclick="setPayStatus2(816,&#39;sent&#39;)" style="pointer-events: auto;"><span class="dot"></span>Sent</div><div class="sdrop-opt opt-pay-pending" onclick="setPayStatus2(816,&#39;pending&#39;)" style="pointer-events: auto;"><span class="dot"></span>Pending</div><div class="sdrop-opt opt-pay-done" onclick="setPayStatus2(816,&#39;done&#39;)" style="pointer-events: auto;"><span class="dot"></span>Done</div></div></div></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Ghi chú..." oninput="updatePay(816,&#39;notes&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px;width:32px"><button class="pay-del-btn" onclick="delPayRow(816)" style="background: transparent; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 0px; pointer-events: auto;">✕</button></td></tr></tbody></table></div><button onclick="addPayRowForType(&#39;advance&#39;)" style="background: transparent; border: 1px solid var(--border); color: var(--accent); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s; pointer-events: auto;" onmouseover="this.style.background=&#39;var(--s2)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">+ Thêm dòng</button></div></div><div class="pay-group-card" style="border-left:4px solid var(--accent);background:var(--s1);border-radius:6px;"><div class="pay-card-head" onclick="togglePayCard(&#39;paycard-payment&#39;)"><span class="pay-card-toggle">▼</span><strong style="font-size:14px">Thanh toán</strong><span style="color:var(--text3);font-size:12px;margin-left:auto">(1)</span></div><div id="paycard-payment" class="pay-card-body" style="padding:16px"><div class="pay-table-wrap"><table style="width:100%;border-collapse:collapse;margin-bottom:0;font-size:13px"><thead style="border-bottom:1px solid var(--border);background:var(--s3)"><tr><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">LOẠI</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">HẠNG MỤC</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">NGÀY REQUEST</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">MÃ ĐỀ XUẤT</th><th style="padding:6px 15px;text-align:right;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">SỐ TIỀN</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">TRẠNG THÁI</th><th style="padding:6px 15px;text-align:left;font-weight:700;color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px">GHI CHÚ</th><th style="padding:8px;width:32px"></th></tr></thead><tbody><tr class="pay-row" data-rid="818" style="border-bottom:1px solid var(--border-dim);hover-background:var(--s2)"><td style="padding:10px 15px"><select class="pay-type-sel" onchange="updatePay(818,&#39;type&#39;,this.value);renderPayTable()" style="font-size:12px"><option value="advance">Tạm ứng</option><option value="payment" selected="">Thanh toán</option></select></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Tên dự án..." oninput="updatePay(818,&#39;name&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px 15px"><input class="pay-ce" type="date" value="" onchange="updatePay(818,&#39;date&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Mã đề xuất" oninput="updatePay(818,&#39;code&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px;text-align:right"><input class="pay-ce money" value="" placeholder="0" onfocus="this.value=unfmtAmt(this.value)" onblur="this.value=fmtAmt(this.value);updatePay(818,&#39;amount&#39;,unfmtAmt(this.value));renderPaySummary()" style="font-size:12px;border:none;background:transparent;text-align:right;padding:0;width:100%"></td><td style="padding:10px 15px"><div class="sdrop-wrap" onclick="event.stopPropagation()" style="pointer-events: auto;"><span class="status-pill pay-pending" onclick="togglePaySDrop(event,818)" style="pointer-events: auto; cursor: pointer;">Pending</span><div class="sdrop-menu" id="paysdrop-818" style="pointer-events: auto;"><div class="sdrop-opt opt-sent" onclick="setPayStatus2(818,&#39;sent&#39;)" style="pointer-events: auto;"><span class="dot"></span>Sent</div><div class="sdrop-opt opt-pay-pending opt-active" onclick="setPayStatus2(818,&#39;pending&#39;)" style="pointer-events: auto;"><span class="dot"></span>Pending</div><div class="sdrop-opt opt-pay-done" onclick="setPayStatus2(818,&#39;done&#39;)" style="pointer-events: auto;"><span class="dot"></span>Done</div></div></div></td><td style="padding:10px 15px"><input class="pay-ce" value="" placeholder="Ghi chú..." oninput="updatePay(818,&#39;notes&#39;,this.value)" style="font-size:12px;border:none;background:transparent;width:100%;padding:0"></td><td style="padding:10px;width:32px"><button class="pay-del-btn" onclick="delPayRow(818)" style="background: transparent; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 0px; pointer-events: auto;">✕</button></td></tr></tbody></table></div><button onclick="addPayRowForType(&#39;payment&#39;)" style="background: transparent; border: 1px solid var(--border); color: var(--accent); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s; pointer-events: auto;" onmouseover="this.style.background=&#39;var(--s2)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">+ Thêm dòng</button></div></div></div>
   </div>
 
+  <!-- SHEET: NHÀ CUNG CẤP -->
+  <div class="tab-sheet" id="sheet-suppliers">
+    <!-- Row 1: Search + Add button -->
+    <div class="sup-toolbar-top">
+      <div class="search-box" style="margin-left:0;flex:1;max-width:340px;">
+        <span class="si">🔍</span>
+        <input id="searchSupIn" type="text" placeholder="Tìm tên NCC, lĩnh vực, khu vực..." oninput="renderSuppliers()" style="width:100%;">
+      </div>
+      <button onclick="openAddSupplier()" style="margin-left:auto;padding:8px 18px;border-radius:9px;border:none;background:var(--accent);color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:opacity .2s;pointer-events:auto;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">＋ Thêm NCC</button>
+    </div>
+    <!-- Row 2: Filters -->
+    <div class="sup-filter-bar">
+      <span style="font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;">Hạng mục:</span>
+      <select class="fbar-select" id="supCatFilter" onchange="renderSuppliers()" style="flex-shrink:0;">
+        <option value="">Tất cả</option>
+        <option value="Âm thanh & Ánh sáng">Âm thanh &amp; Ánh sáng</option>
+        <option value="In ấn & POSM">In ấn &amp; POSM</option>
+        <option value="Nhân sự & PG">Nhân sự &amp; PG</option>
+        <option value="Trang trí & Floral">Trang trí &amp; Floral</option>
+        <option value="Venue & Địa điểm">Venue &amp; Địa điểm</option>
+        <option value="Catering & F&B">Catering &amp; F&amp;B</option>
+        <option value="Thiết bị & Vận chuyển">Thiết bị &amp; Vận chuyển</option>
+        <option value="Truyền thông & PR">Truyền thông &amp; PR</option>
+        <option value="Nhiếp ảnh & Quay phim">Nhiếp ảnh &amp; Quay phim</option>
+        <option value="Khác">Khác</option>
+      </select>
+      <span style="font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;margin-left:8px;">Khu vực:</span>
+      <select class="fbar-select" id="supAreaFilter" onchange="renderSuppliers()" style="flex-shrink:0;">
+        <option value="">Tất cả</option>
+        <option value="TP.HCM">TP.HCM</option>
+        <option value="Hà Nội">Hà Nội</option>
+        <option value="Đà Nẵng">Đà Nẵng</option>
+        <option value="Toàn quốc">Toàn quốc</option>
+        <option value="Khác">Khác</option>
+      </select>
+    </div>
+    <!-- Summary bar -->
+    <div class="sup-summary" id="supSummary"></div>
+    <!-- Table -->
+    <div class="sup-content">
+      <div class="sup-table-wrap">
+        <table class="sup-table" id="supTable">
+          <thead>
+            <tr>
+              <th class="sth" style="padding-left:22px;width:44px">STT</th>
+              <th class="sth" style="min-width:160px">Tên NCC</th>
+              <th class="sth" style="min-width:150px">Hạng mục</th>
+              <th class="sth" style="min-width:110px">Khu vực</th>
+              <th class="sth" style="min-width:140px">Lĩnh vực</th>
+              <th class="sth" style="min-width:130px">Người liên hệ</th>
+              <th class="sth" style="min-width:130px">Số điện thoại</th>
+              <th class="sth" style="min-width:170px">Email</th>
+              <th class="sth" style="min-width:180px">Ghi chú</th>
+              <th class="sth" style="min-width:120px">📎 File</th>
+              <th class="sth" style="width:32px"></th>
+            </tr>
+          </thead>
+          <tbody id="supTbody"></tbody>
+        </table>
+      </div>
+      <button class="sup-add-row" onclick="openAddSupplier()" style="pointer-events:auto;">＋ Thêm nhà cung cấp mới</button>
+    </div>
+  </div>
+
 </div><!-- end .main -->
 
 <!-- MOBILE BOTTOM NAV -->
@@ -1566,6 +1703,10 @@ function clearAllData() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path><path d="M6 15h4M14 15h4"></path></svg>
     <span class="mbn-label" id="mbn-label-payment">Tracking …</span>
   </button>
+  <button class="mbn-btn" id="mbn-suppliers" onclick="switchTab('suppliers');updateMobileNav('suppliers')" style="pointer-events:auto;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span class="mbn-label">NCC</span>
+  </button>
   <button class="mbn-btn" id="mbn-calendar" onclick="switchTab('calendar');updateMobileNav('calendar')" style="pointer-events:auto;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
     <span class="mbn-label" id="mbn-label-calendar">Calendar</span>
@@ -1575,6 +1716,65 @@ function clearAllData() {
     <span class="mbn-label">Ghi chú</span>
   </button>
 </nav>
+
+<!-- SUPPLIER MODAL -->
+<div class="overlay" id="supModal">
+  <div class="modal" style="max-width:580px;width:95%;">
+    <div class="modal-hd">
+      <div class="modal-title" id="supModalTitle">＋ Thêm Nhà Cung Cấp</div>
+      <button class="modal-close" onclick="closeSupModal()" style="pointer-events:auto;">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="fg full"><label class="flbl">Tên nhà cung cấp *</label><input class="fi" id="sf-name" placeholder="VD: IMC Group, Cty TNHH ABC..."></div>
+      <div class="fg"><label class="flbl">Hạng mục</label>
+        <select class="fsel" id="sf-category">
+          <option value="">-- Chọn hạng mục --</option>
+          <option>Âm thanh &amp; Ánh sáng</option>
+          <option>In ấn &amp; POSM</option>
+          <option>Nhân sự &amp; PG</option>
+          <option>Trang trí &amp; Floral</option>
+          <option>Venue &amp; Địa điểm</option>
+          <option>Catering &amp; F&amp;B</option>
+          <option>Thiết bị &amp; Vận chuyển</option>
+          <option>Truyền thông &amp; PR</option>
+          <option>Nhiếp ảnh &amp; Quay phim</option>
+          <option>Khác</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">Khu vực</label>
+        <select class="fsel" id="sf-area" onchange="supAreaChange()">
+          <option value="">-- Chọn khu vực --</option>
+          <option>TP.HCM</option>
+          <option>Hà Nội</option>
+          <option>Đà Nẵng</option>
+          <option>Toàn quốc</option>
+          <option value="__custom__">Khác (tự điền...)</option>
+        </select>
+        <input class="fi" id="sf-area-custom" placeholder="VD: Hà Tĩnh, Cần Thơ, Bình Dương..." style="margin-top:6px;display:none;">
+      </div>
+      <div class="fg"><label class="flbl">Lĩnh vực</label><input class="fi" id="sf-field" placeholder="VD: Event production, Branding..."></div>
+      <div class="fg"><label class="flbl">Người liên hệ</label><input class="fi" id="sf-contact" placeholder="Tên người liên hệ..."></div>
+      <div class="fg"><label class="flbl">Số điện thoại</label><input class="fi" id="sf-phone" placeholder="0909 xxx xxx" type="tel"></div>
+      <div class="fg"><label class="flbl">Email</label><input class="fi" id="sf-email" placeholder="email@example.com" type="email"></div>
+      <div class="fg full"><label class="flbl">Ghi chú</label><textarea class="fta" id="sf-notes" placeholder="Kinh nghiệm hợp tác, mức giá tham khảo..."></textarea></div>
+      <div class="fg full">
+        <label class="flbl">📎 File đính kèm <span style="color:var(--text3);font-weight:400">(Ratecard, báo giá...)</span></label>
+        <div id="sup-drop-zone" onclick="document.getElementById('sf-files').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor=''" ondrop="supFileDrop(event)"
+          style="border:2px dashed var(--border2);border-radius:8px;padding:14px 16px;cursor:pointer;transition:border-color .15s;display:flex;align-items:center;gap:10px;background:var(--s2);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          <span style="font-size:12px;color:var(--text3)">Kéo thả file vào đây hoặc <b style="color:var(--accent)">chọn file</b></span>
+          <input type="file" id="sf-files" multiple style="display:none" onchange="supFileSelect(this.files)">
+        </div>
+        <div id="sf-file-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-ghost" onclick="closeSupModal()" style="pointer-events:auto;">Huỷ</button>
+      <button class="btn-prim" onclick="saveSupplier()" style="pointer-events:auto;" id="supSaveBtn">Lưu</button>
+    </div>
+  </div>
+</div>
 
 </div><!-- end .app -->
 
@@ -1705,8 +1905,9 @@ let proposals = [
   {id:500, name:'AA', brand:'chill', location:'hcm', date:'2026-03-13', package:'Hiện vật: 1.200 lon', status:'Đang xem xét', notes:'', files:[]}
 ];
 let payments = [];
+let suppliers = []; // [{id, name, category, area, field, contact, phone, email, address, notes}]
 let notes = []; // [{id, title, body, pinned, created, updated}]
-let nnid = 9000;
+let nnid = 9000; let nsupid = 3000;
 let nid=200, ntid=2000, npid=500, npayid=800;
 let curFilter='all', curPrioFilter='all';
 let curPayType='all', curPayStatus='all';
@@ -1762,10 +1963,11 @@ function save() {
     projects: safe,
     proposals: safeProp,
     payments,
+    suppliers,
     notes,
     trashNotes,
     tabNames,
-    ids: {nid,ntid,npid,npayid},
+    ids: {nid,ntid,npid,npayid,nsupid},
     trashWip:  trashWip.map(e=>({...e,item:{...e.item,files:(e.item.files||[]).map(f=>({name:f.name, fileId:f.fileId, type:f.type, size:f.size}))}})),
     trashProp: trashProp.map(e=>({...e,item:{...e.item,files:(e.item.files||[]).map(f=>({name:f.name, fileId:f.fileId, type:f.type, size:f.size}))}})),
     trashPay
@@ -1775,8 +1977,9 @@ function save() {
     localStorage.setItem(SAVE_KEY, JSON.stringify(safe));
     localStorage.setItem('wip_proposals_v1', JSON.stringify(safeProp));
     localStorage.setItem('wip_payments_v1', JSON.stringify(payments));
+    localStorage.setItem('wip_suppliers_v1', JSON.stringify(suppliers));
     localStorage.setItem('wip_tabnames_v1', JSON.stringify(tabNames));
-    localStorage.setItem('wip_ids_v1', JSON.stringify({nid,ntid,npid,npayid}));
+    localStorage.setItem('wip_ids_v1', JSON.stringify({nid,ntid,npid,npayid,nsupid}));
   } catch(e) {}
   // Lưu cloud
   clearTimeout(_saveCloudTimer);
@@ -1807,8 +2010,9 @@ function load() {
         if (cloudData.projects)  projects  = cloudData.projects;
         if (cloudData.proposals) proposals = cloudData.proposals;
         if (cloudData.payments)  payments  = cloudData.payments;
+        if (cloudData.suppliers) suppliers = cloudData.suppliers;
         if (cloudData.tabNames)  Object.assign(tabNames, cloudData.tabNames);
-        if (cloudData.ids) { const o=cloudData.ids; nid=o.nid||200; ntid=o.ntid||2000; npid=o.npid||500; npayid=o.npayid||800; }
+        if (cloudData.ids) { const o=cloudData.ids; nid=o.nid||200; ntid=o.ntid||2000; npid=o.npid||500; npayid=o.npayid||800; nsupid=o.nsupid||3000; }
         if (cloudData.trashWip)  trashWip  = cloudData.trashWip;
         if (cloudData.trashProp) trashProp = cloudData.trashProp;
         if (cloudData.trashPay)  trashPay  = cloudData.trashPay;
@@ -1822,10 +2026,12 @@ function load() {
       // Fallback: dùng localStorage
       try {
         const raw = localStorage.getItem(SAVE_KEY); if (raw) projects = JSON.parse(raw);
-        const ids = localStorage.getItem('wip_ids_v1'); if (ids) { const o=JSON.parse(ids); nid=o.nid||200; ntid=o.ntid||2000; npid=o.npid||500; npayid=o.npayid||800; }
+        const ids = localStorage.getItem('wip_ids_v1'); if (ids) { const o=JSON.parse(ids); nid=o.nid||200; ntid=o.ntid||2000; npid=o.npid||500; npayid=o.npayid||800; nsupid=o.nsupid||3000; }
         const rawProp = localStorage.getItem('wip_proposals_v1'); if (rawProp) proposals = JSON.parse(rawProp);
         const rawPay  = localStorage.getItem('wip_payments_v1');
         if (rawPay) { const p=JSON.parse(rawPay); if(Array.isArray(p)) payments=p; }
+        const rawSup  = localStorage.getItem('wip_suppliers_v1');
+        if (rawSup) { const s=JSON.parse(rawSup); if(Array.isArray(s)) suppliers=s; }
         const rawNames = localStorage.getItem('wip_tabnames_v1');
         if (rawNames) { const names=JSON.parse(rawNames); Object.assign(tabNames,names); ['wip','proposals','payment'].forEach(k=>{ if(names[k]){const el=document.getElementById('tabname-'+k);if(el)el.textContent=names[k];} }); }
         const rawTr = localStorage.getItem('wip_trash_v2'); if (rawTr) try { trash = JSON.parse(rawTr); } catch(e){}
@@ -1836,6 +2042,7 @@ function load() {
     renderProposals();
     renderPayTable();
     renderPaySummary();
+    renderSuppliers();
     updateMobileNav(currentTab || 'wip');
     // Ẩn loading overlay
     const ov = document.getElementById('cloudLoadOverlay');
@@ -2999,6 +3206,7 @@ function switchTab(tab) {
   if (tab==='wip') render();
   else if (tab==='proposals') renderProposals();
   else if (tab==='payment') renderPayTable();
+  else if (tab==='suppliers') renderSuppliers();
   else if (tab==='calendar') renderCalendar();
   else if (tab==='notes') {
     if (isViewMode) { switchTab('wip'); return; }
@@ -3078,6 +3286,302 @@ function tabDragEnd(e) {
   e.currentTarget.classList.remove('dragging');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('drag-over','dragging'));
   dragSrcTab = null;
+}
+
+// ══════ SUPPLIERS ══════
+const SUP_CATEGORY_COLORS = {
+  'Âm thanh & Ánh sáng': {bg:'rgba(29,155,240,0.13)', color:'var(--accent)'},
+  'In ấn & POSM':         {bg:'rgba(120,86,255,0.13)', color:'var(--purple)'},
+  'Nhân sự & PG':         {bg:'rgba(0,186,124,0.13)',  color:'var(--green)'},
+  'Trang trí & Floral':   {bg:'rgba(255,212,0,0.13)',  color:'var(--yellow)'},
+  'Venue & Địa điểm':     {bg:'rgba(253,171,61,0.13)', color:'var(--mon-working)'},
+  'Catering & F&B':       {bg:'rgba(244,33,46,0.13)',  color:'var(--red)'},
+  'Thiết bị & Vận chuyển':{bg:'rgba(87,155,252,0.14)', color:'var(--mon-low)'},
+  'Truyền thông & PR':    {bg:'rgba(163,89,208,0.13)', color:'var(--mon-medium)'},
+  'Nhiếp ảnh & Quay phim':{bg:'rgba(0,200,117,0.13)', color:'var(--mon-done)'},
+  'Khác':                 {bg:'rgba(113,118,123,0.13)','color':'var(--text2)'}
+};
+
+let supEditId = null;
+
+function renderSuppliers() {
+  const tbody = document.getElementById('supTbody'); if (!tbody) return;
+  const search = (document.getElementById('searchSupIn')?.value||'').toLowerCase();
+  const catF   = document.getElementById('supCatFilter')?.value||'';
+  const areaF  = document.getElementById('supAreaFilter')?.value||'';
+  const STD_AREAS = ['TP.HCM','Hà Nội','Đà Nẵng','Toàn quốc'];
+
+  let list = suppliers.filter(s => {
+    if (catF && s.category !== catF) return false;
+    if (areaF) {
+      if (areaF === 'Khác') { if (STD_AREAS.includes(s.area)) return false; }
+      else { if (s.area !== areaF) return false; }
+    }
+    if (!search) return true;
+    return (s.name||'').toLowerCase().includes(search) ||
+           (s.field||'').toLowerCase().includes(search) ||
+           (s.category||'').toLowerCase().includes(search) ||
+           (s.area||'').toLowerCase().includes(search) ||
+           (s.contact||'').toLowerCase().includes(search) ||
+           (s.phone||'').toLowerCase().includes(search) ||
+           (s.email||'').toLowerCase().includes(search) ||
+           (s.notes||'').toLowerCase().includes(search);
+  });
+
+  // Summary bar
+  const sumEl = document.getElementById('supSummary');
+  if (sumEl) {
+    const cats = {};
+    suppliers.forEach(s => { cats[s.category||'Khác'] = (cats[s.category||'Khác']||0)+1; });
+    const topCats = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,4);
+    sumEl.innerHTML =
+      '<div class="sup-sum-card"><div class="sup-sum-label">Tổng NCC</div><div class="sup-sum-val c-blue">'+(suppliers.length)+'</div></div>' +
+      topCats.map(([k,v])=>'<div class="sup-sum-card"><div class="sup-sum-label">'+esc(k)+'</div><div class="sup-sum-val" style="font-size:14px">'+v+'</div></div>').join('') +
+      (list.length < suppliers.length ? '<div class="sup-sum-card"><div class="sup-sum-label">Kết quả lọc</div><div class="sup-sum-val c-yellow">'+list.length+'</div></div>' : '');
+  }
+
+  const scEl = document.getElementById('sc-suppliers');
+  if (scEl) scEl.textContent = suppliers.length;
+
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:48px 20px;color:var(--text3)">'+
+      (suppliers.length === 0
+        ? '<div style="font-size:32px;margin-bottom:10px">📋</div><div style="font-weight:600;font-size:14px;margin-bottom:4px">Chưa có nhà cung cấp nào</div><div style="font-size:12px">Nhấn <b>＋ Thêm NCC</b> để bắt đầu</div>'
+        : '<div style="font-size:32px;margin-bottom:10px">🔍</div><div style="font-weight:600">Không tìm thấy kết quả phù hợp</div>')+
+      '</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map((s, i) => {
+    const cc = SUP_CATEGORY_COLORS[s.category] || {bg:'rgba(113,118,123,0.13)',color:'var(--text2)'};
+    const catBadge = s.category
+      ? '<span class="sup-field-badge" style="background:'+cc.bg+';color:'+cc.color+';cursor:pointer" title="Click để chỉnh sửa" onclick="openEditSupplier('+s.id+')">'+esc(s.category)+'</span>'
+      : '<span style="color:var(--text3);cursor:pointer;font-size:12px" onclick="openEditSupplier('+s.id+')">— Chọn</span>';
+    const areaBadge = s.area
+      ? '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;background:var(--s3);color:var(--text2);cursor:pointer" onclick="openEditSupplier('+s.id+')">📍 '+esc(s.area)+'</span>'
+      : '<span style="color:var(--text3);cursor:pointer;font-size:12px" onclick="openEditSupplier('+s.id+')">— Chọn</span>';
+    const phoneHtml = s.phone
+      ? '<a href="tel:'+esc(s.phone)+'" style="color:var(--accent);text-decoration:none;font-weight:500" onclick="event.stopPropagation()">'+esc(s.phone)+'</a>'
+      : '<span style="color:var(--text3)">—</span>';
+    const emailHtml = s.email
+      ? '<a href="mailto:'+esc(s.email)+'" style="color:var(--accent);text-decoration:none;font-size:12px" onclick="event.stopPropagation()">'+esc(s.email)+'</a>'
+      : '<span style="color:var(--text3)">—</span>';
+    // Files cell
+    const files = s.files||[];
+    const filesHtml = files.length
+      ? files.map((f,fi)=>'<div class="file-chip" style="max-width:160px"><span>'+fi(f.name)+'</span><span class="fn" onclick="openSupFile('+s.id+','+fi+')" title="'+esc(f.name)+'">'+esc(f.name)+'</span><span class="fx" onclick="delSupFile('+s.id+','+fi+')">🗑</span></div>').join('')
+      : '<span style="color:var(--text3);font-size:11px;cursor:pointer" onclick="openEditSupplier('+s.id+')">＋ Đính kèm</span>';
+
+    return '<tr class="sup-row" data-sid="'+s.id+'">' +
+      '<td style="padding-left:22px;text-align:center;color:var(--text3);font-size:11px;font-weight:600;width:44px">'+(i+1)+'</td>' +
+      '<td><div class="sup-ce" contenteditable="true" onblur="saveSup('+s.id+',\'name\',this.innerText)" style="font-weight:600">'+esc(s.name||'')+'</div></td>' +
+      '<td>'+catBadge+'</td>' +
+      '<td>'+areaBadge+'</td>' +
+      '<td><div class="sup-ce" contenteditable="true" onblur="saveSup('+s.id+',\'field\',this.innerText)" style="font-size:12px">'+esc(s.field||'')+'</div></td>' +
+      '<td><div class="sup-ce" contenteditable="true" onblur="saveSup('+s.id+',\'contact\',this.innerText)">'+esc(s.contact||'')+'</div></td>' +
+      '<td>'+phoneHtml+'</td>' +
+      '<td>'+emailHtml+'</td>' +
+      '<td><div class="sup-ce" contenteditable="true" onblur="saveSup('+s.id+',\'notes\',this.innerText)" style="font-size:12px;color:var(--text2)">'+esc(s.notes||'')+'</div></td>' +
+      '<td style="min-width:120px"><div class="file-list" style="flex-wrap:wrap;gap:4px;display:flex">'+filesHtml+'</div></td>'+
+      '<td><button class="sup-del-btn" onclick="delSupplier('+s.id+')" title="Xoá NCC này">✕</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function saveSup(id, field, val) {
+  const s = suppliers.find(x => x.id===id); if (!s) return;
+  s[field] = val.trim();
+  if (field === 'name' || field === 'category' || field === 'area') renderSuppliers();
+  scheduleSave();
+}
+
+// ── Supplier: custom area toggle ──
+function supAreaChange() {
+  const sel = document.getElementById('sf-area');
+  const inp = document.getElementById('sf-area-custom');
+  if (!inp) return;
+  if (sel.value === '__custom__') {
+    inp.style.display = 'block';
+    inp.focus();
+  } else {
+    inp.style.display = 'none';
+    inp.value = '';
+  }
+}
+
+// ── Supplier: pending files in modal ──
+let _supPendingFiles = []; // {name, file, url} – url filled after upload
+
+function supFileSelect(files) {
+  Array.from(files).forEach(f => {
+    _supPendingFiles.push({name: f.name, file: f, url: null, type: f.type, size: f.size});
+  });
+  renderSupFilePreviews();
+  document.getElementById('sf-files').value = '';
+}
+function supFileDrop(e) {
+  e.preventDefault();
+  document.getElementById('sup-drop-zone').style.borderColor = '';
+  supFileSelect(e.dataTransfer.files);
+}
+function renderSupFilePreviews() {
+  const el = document.getElementById('sf-file-list'); if (!el) return;
+  el.innerHTML = _supPendingFiles.map((f,i) =>
+    '<div class="file-chip"><span>'+fi(f.name)+'</span><span class="fn" title="'+esc(f.name)+'">'+esc(f.name)+'</span>'+
+    (f.url ? '<span style="color:var(--green);font-size:10px">✓</span>' : '<span style="color:var(--text3);font-size:10px">⏳</span>')+
+    '<span class="fx" onclick="_supPendingFiles.splice('+i+',1);renderSupFilePreviews()">🗑</span></div>'
+  ).join('');
+}
+
+function openAddSupplier() {
+  if (isViewMode) return;
+  supEditId = null;
+  _supPendingFiles = [];
+  document.getElementById('supModalTitle').textContent = '＋ Thêm Nhà Cung Cấp';
+  document.getElementById('supSaveBtn').textContent = 'Lưu';
+  ['name','field','contact','phone','email','notes'].forEach(f => {
+    const el = document.getElementById('sf-'+f); if (el) el.value='';
+  });
+  document.getElementById('sf-category').value = '';
+  document.getElementById('sf-area').value = '';
+  document.getElementById('sf-area-custom').style.display = 'none';
+  document.getElementById('sf-area-custom').value = '';
+  document.getElementById('sf-file-list').innerHTML = '';
+  document.getElementById('supModal').classList.add('open');
+}
+
+function openEditSupplier(id) {
+  if (isViewMode) return;
+  const s = suppliers.find(x => x.id===id); if (!s) return;
+  supEditId = id;
+  _supPendingFiles = [];
+  document.getElementById('supModalTitle').textContent = '✎ Chỉnh sửa NCC';
+  document.getElementById('supSaveBtn').textContent = 'Cập nhật';
+  document.getElementById('sf-name').value    = s.name||'';
+  document.getElementById('sf-category').value= s.category||'';
+  document.getElementById('sf-field').value   = s.field||'';
+  document.getElementById('sf-contact').value = s.contact||'';
+  document.getElementById('sf-phone').value   = s.phone||'';
+  document.getElementById('sf-email').value   = s.email||'';
+  document.getElementById('sf-notes').value   = s.notes||'';
+  // Area: check if custom
+  const stdAreas = ['TP.HCM','Hà Nội','Đà Nẵng','Toàn quốc'];
+  const customInp = document.getElementById('sf-area-custom');
+  if (s.area && !stdAreas.includes(s.area)) {
+    document.getElementById('sf-area').value = '__custom__';
+    customInp.style.display = 'block';
+    customInp.value = s.area;
+  } else {
+    document.getElementById('sf-area').value = s.area||'';
+    customInp.style.display = 'none';
+    customInp.value = '';
+  }
+  // Show existing files as previews
+  document.getElementById('sf-file-list').innerHTML = (s.files||[]).map((f,i)=>
+    '<div class="file-chip"><span>'+fi(f.name)+'</span><span class="fn" title="'+esc(f.name)+'" onclick="openSupFile('+id+','+i+')">'+esc(f.name)+'</span>'+
+    '<span class="fx" onclick="delSupFileModal('+id+','+i+')">🗑</span></div>'
+  ).join('');
+  document.getElementById('supModal').classList.add('open');
+}
+
+function closeSupModal() {
+  document.getElementById('supModal').classList.remove('open');
+  supEditId = null;
+  _supPendingFiles = [];
+}
+
+function saveSupplier() {
+  const name = (document.getElementById('sf-name').value||'').trim();
+  if (!name) { document.getElementById('sf-name').focus(); return; }
+
+  // Resolve area value
+  const areaSel = document.getElementById('sf-area').value;
+  const areaCustom = (document.getElementById('sf-area-custom').value||'').trim();
+  const area = (areaSel === '__custom__') ? (areaCustom || 'Khác') : areaSel;
+
+  const data = {
+    name,
+    category: document.getElementById('sf-category').value||'',
+    area,
+    field:    document.getElementById('sf-field').value.trim()||'',
+    contact:  document.getElementById('sf-contact').value.trim()||'',
+    phone:    document.getElementById('sf-phone').value.trim()||'',
+    email:    document.getElementById('sf-email').value.trim()||'',
+    notes:    document.getElementById('sf-notes').value.trim()||''
+  };
+
+  let target;
+  if (supEditId) {
+    target = suppliers.find(x => x.id===supEditId);
+    if (target) Object.assign(target, data);
+  } else {
+    target = {id: nsupid++, ...data, files:[]};
+    suppliers.push(target);
+  }
+
+  closeSupModal();
+  renderSuppliers();
+  scheduleSave();
+
+  // Upload pending files in background
+  if (_supPendingFiles.length && target) {
+    const sid = target.id;
+    showNotification('⏳ Đang upload ' + _supPendingFiles.length + ' file...');
+    let done = 0;
+    _supPendingFiles.forEach(pf => {
+      uploadToCloudinary(pf.file).then(url => {
+        const sup = suppliers.find(x => x.id===sid);
+        if (sup) {
+          if (!sup.files) sup.files = [];
+          sup.files.push({name: pf.name, type: pf.type, size: pf.size, url, fileId: url});
+        }
+        done++;
+        if (done === _supPendingFiles.length) {
+          renderSuppliers();
+          scheduleSave();
+          showNotification('✓ Upload xong ' + done + ' file cho NCC');
+        }
+      }).catch(() => {
+        showNotification('❌ Upload thất bại: ' + pf.name);
+      });
+    });
+    _supPendingFiles = [];
+  }
+}
+
+function openSupFile(sid, idx) {
+  const s = suppliers.find(x => x.id===sid); if (!s) return;
+  const f = (s.files||[])[idx]; if (!f) return;
+  const url = f.url || f.fileId;
+  if (!url) { alert('Không tìm thấy file. Vui lòng upload lại.'); return; }
+  window.open(url, '_blank');
+}
+
+function delSupFile(sid, idx) {
+  const s = suppliers.find(x => x.id===sid); if (!s) return;
+  s.files.splice(idx, 1);
+  renderSuppliers();
+  scheduleSave();
+}
+
+function delSupFileModal(sid, idx) {
+  const s = suppliers.find(x => x.id===sid); if (!s) return;
+  s.files.splice(idx, 1);
+  // Refresh file list in open modal
+  document.getElementById('sf-file-list').innerHTML = (s.files||[]).map((f,i)=>
+    '<div class="file-chip"><span>'+fi(f.name)+'</span><span class="fn" title="'+esc(f.name)+'" onclick="openSupFile('+sid+','+i+')">'+esc(f.name)+'</span>'+
+    '<span class="fx" onclick="delSupFileModal('+sid+','+i+')">🗑</span></div>'
+  ).join('');
+  scheduleSave();
+}
+
+function delSupplier(id) {
+  const s = suppliers.find(x => x.id===id);
+  if (!s) return;
+  if (!confirm('Xoá nhà cung cấp "' + (s.name||'này') + '"?')) return;
+  suppliers = suppliers.filter(x => x.id !== id);
+  renderSuppliers();
+  scheduleSave();
 }
 
 // ══════ PROPOSALS ══════
