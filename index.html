@@ -2971,10 +2971,8 @@ function switchToTrash() {
   // Hide stats + filter bar when in trash view
   const statsRow = document.getElementById('statsRow');
   const filterBar = document.getElementById('wip-filter-bar');
-  const topBar   = document.querySelector('#sheet-wip > div:first-child');
   if (statsRow) statsRow.style.display = 'none';
   if (filterBar) filterBar.style.display = 'none';
-  if (topBar) topBar.style.display = 'none';
   // Update sidebar
   document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
   document.getElementById('sbv-trash')?.classList.add('active');
@@ -3256,10 +3254,8 @@ function switchTab(tab) {
   // Restore WIP elements that were hidden during trash view
   const statsRow = document.getElementById('statsRow');
   const filterBar = document.getElementById('wip-filter-bar');
-  const topBar   = document.querySelector('#sheet-wip > div:first-child');
   if (statsRow) statsRow.style.display = '';
   if (filterBar) filterBar.style.display = '';
-  if (topBar) topBar.style.display = '';
   document.querySelectorAll('.tab-sheet').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('sheet-'+tab).classList.add('active');
